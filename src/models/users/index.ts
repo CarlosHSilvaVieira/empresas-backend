@@ -14,7 +14,7 @@ class UsersModel {
 
     public getUser(user: IUser): Promise<IUser> {
 
-        const query: string = `Select * from users where email = '${user.email}' and password = '${user.password}'`
+        const query: string = `Select * from users where email = '${this.addSlashes(user.email)}' and password = '${this.addSlashes(user.password)}'`
         return this.executeQuery(query)
     }
 
@@ -34,6 +34,10 @@ class UsersModel {
         })
 
         return promise
+    }
+
+    private addSlashes(value: string): string {
+        return value.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
     }
 }
 

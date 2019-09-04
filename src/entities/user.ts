@@ -1,9 +1,9 @@
-import { IUser } from "interfaces/iuser"
+import { IUser } from 'interfaces/iuser'
 
 class User implements IUser {
-    uid?: number;
-    email: string;
-    password: string;
+    uid?: number
+    email: string
+    password: string
 
     constructor(email: string, password: string, uid?: number) {
         this.uid = uid

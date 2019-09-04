@@ -10,6 +10,11 @@ import usersModel from '../../models/users'
 
 class UsersController {
 
+    private static createToken(user: IUser): string {
+        const token = jwt.sign({ user }, ServerVariables.key, { algorithm: 'HS256', expiresIn: ServerVariables.expires })
+        return token
+    }
+
     signIn(req: Request, res: Response, next: NextFunction) {
 
         const user: IUser = req.body
@@ -28,12 +33,6 @@ class UsersController {
         promise.catch((error) => {
             res.status(500).send(error)
         })
-    }
-
-    private static createToken(user: IUser): string {
-
-        const token = jwt.sign({ user }, ServerVariables.key, { algorithm: 'HS256', expiresIn: "1 hour" })
-        return token
     }
 }
 
