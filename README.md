@@ -27,9 +27,9 @@ A porta utilizada pela API será por padrão a `3000`. Caso queira alterar a por
 Após a execução do comando de qualquer um dos comandos acima deve ser retornada a seguinte
 mensagem no terminal `Express server listening on port 3000`
 
-## Troubleshooting
+## Resolução de erros
 
-Caso no terminal da aplicação você receber o seguinte erro: 
+Caso Você receba o seguinte erro no terminal da aplicação: 
 
 `ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server; consider upgrading MySQL client`
 
@@ -40,16 +40,18 @@ Por favor atualize o seu Client do MYSQL ou altere a senha do seu usuário no ba
 Onde
 
 USER: será o nome do seu usuário
+
 HOST: será a URL do host
+
 PASSWORD: será sua nova senha 
 
-exemplo: `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'q1w2e3r4'`
+Exemplo: `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'q1w2e3r4'`
 
 ## Conexão com o MYSQL
 
-Sugiro utilizar o usuário `root` com a senha `q1w2e3r4` com o schema `empresas_backend`
+Sugiro utilizar o usuário `root` com a senha `q1w2e3r4` com o banco `empresas_backend`
 
-Porém caso queira alterar esses dados, navegue até o arquivo ServerConstants.ts localizado em `./src/utils/ServerConstants.ts` e altere os atributos `userDB`, `passDB`, `schema` com os valores desejados.
+Porém caso queira alterar esses dados, navegue até o arquivo ServerConstants.ts localizado em `./src/utils/ServerConstants.ts` e altere os atributos `hostDB`, `portDB`, `userDB`, `passDB`, `schemaDB` com os valores desejados.
 
 ## Estruturação do projeto
 
@@ -65,8 +67,7 @@ Esta seção define a estrutura de pastas e arquivos do projeto
 
     ### app.ts
 
-    Neste arquivo é criado o servidor express, realizada as configurações para
-    que o servidor aceite receber application/json. Também é realizada a conexão com banco de dados 
+    Neste arquivo é criado o servidor express
 
     ### server.ts
 
@@ -96,7 +97,9 @@ Esta seção define a estrutura de pastas e arquivos do projeto
 
 Método: POST
 
-Neste endpoint é criado o token de acesso para um usuário que esteja presente no banco de dados
+Neste endpoint é criado o token de acesso para um usuário que esteja presente no banco de dados.
+
+O tempo de duração padrão do token é de uma hora.
 
 Exemplo de requisição:
 
@@ -109,7 +112,7 @@ Exemplo de retorno:
 
     {
         "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVpZCI6IjhlZWM0NDEyLWNkZWEtMTFlOS1iMDdhLTcwNGQ3YmNmMDJlYyIsImVtYWlsIjoibHVjYXNyaXplbEBpb2FzeXMuY29tLmJyIiwicGFzc3dvcmQiOiIxMjM0NTY3OCJ9LCJpYXQiOjE1Njc2MDc5NDQsImV4cCI6MTU2NzYwOTc0NH0.vYCscl0jSY5Egt-Wnxtq-WyQaE2XBFtQm1mPqNEkPdA",
-        "uid": "8eec4412-cdea-11e9-b07a-704d7bcf02ec",
+        "uid": "8e8c4412-cd3a-1149-b24a-704d7bcfwedsz",
         "client": "lucasrizel@ioasys.com.br"
     }
 
@@ -127,9 +130,16 @@ Obs: Não se esqueça de inserir no header da requisição os valores de acesso 
 Exemplo de retorno: 
 
     {
-        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVpZCI6IjhlZWM0NDEyLWNkZWEtMTFlOS1iMDdhLTcwNGQ3YmNmMDJlYyIsImVtYWlsIjoibHVjYXNyaXplbEBpb2FzeXMuY29tLmJyIiwicGFzc3dvcmQiOiIxMjM0NTY3OCJ9LCJpYXQiOjE1Njc2MDc5NDQsImV4cCI6MTU2NzYwOTc0NH0.vYCscl0jSY5Egt-Wnxtq-WyQaE2XBFtQm1mPqNEkPdA",
-        "uid": "8eec4412-cdea-11e9-b07a-704d7bcf02ec",
-        "client": "lucasrizel@ioasys.com.br"
+        "data": [
+            {
+                "id": 17,
+                "name": "aQm",
+                "type": {
+                    "id": 1,
+                    "name": "pequena"
+                }
+            }
+        ]
     }
 
 
@@ -142,13 +152,19 @@ Método: GET
 Neste endpoint é retornado os detalhes de uma empresa. A consulta é realizada via id da empresa
 fornecido na url do endpoint
 
-`Exemplo`: http://localhost:3000/api/v1/enterprises/1
+Obs: Não se esqueça de inserir no header da requisição os valores de acesso `access-token`, `uid` e `client`
 
-retorno: 
+`Exemplo`: http://localhost:3000/api/v1/enterprises/16
+
+Exemplo de retorno: 
 
     {
-        "free": Resultado da remoção da blacklist, pode ser true caso realizada com sucesso ou false caso tenha ocorrido algum erro,
-        "error": Retorna o erro caso ele exista, caso não tenha erro possuirá o valor null
+        "id": 16,
+        "name": "empresa startup 4",
+        "type": {
+            "id": 4,
+            "name": "startup"
+        }
     }
 
 
@@ -160,9 +176,28 @@ Método: GET
 
 Neste endpoint é retornada a listagem de empresas. 
 
-retorno: 
+Obs: Não se esqueça de inserir no header da requisição os valores de acesso `access-token`, `uid` e `client`
+
+Exemplo de retorno: 
 
     {
-        "free": Resultado da remoção da blacklist, pode ser true caso realizada com sucesso ou false caso tenha ocorrido algum erro,
-        "error": Retorna o erro caso ele exista, caso não tenha erro possuirá o valor null
+        "data": [
+            {
+                "id": 17,
+                "name": "aQm",
+                "type": {
+                    "id": 1,
+                    "name": "pequena"
+                },
+                {
+                    "id": 2,
+                    "name": "empresa pequena 2",
+                    "type": {
+                        "id": 1,
+                        "name": "pequena"
+                    }
+                },
+                ...
+            }
+        ]
     }
