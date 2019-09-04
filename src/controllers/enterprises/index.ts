@@ -7,17 +7,9 @@ import { IEnterpriseQuery } from 'interfaces/ienterprise'
 
 class EnterprisesController {
 
-    private static createListEnterprises(result: IEnterpriseQuery[]): Enterprise[] {
-
-        let list: Enterprise[] = []
-
-        list = result.map((value: IEnterpriseQuery) => {
-
-            const enterprise = new Enterprise(value.name, value.id, new EnterpriseType(value.enterprise_type, value.enterprise_type_id))
-            return enterprise
-        })
-
-        return list
+    constructor() {
+        this.getEnterpriseByTypeAndName = this.getEnterpriseByTypeAndName.bind(this)
+        this.getAll = this.getAll.bind(this)
     }
 
     getEnterpriseByTypeAndName(req: Request, res: Response, next: NextFunction) {
@@ -31,8 +23,9 @@ class EnterprisesController {
             promise.then((result: IEnterpriseQuery[]) => {
 
                 if (result.length) {
-                    const enterprise = new Enterprise(result[0].name, result[0].id, new EnterpriseType(result[0].enterprise_type, result[0].enterprise_type_id))
-                    res.status(200).json(enterprise)
+
+                    const list: Enterprise[] = this.createListEnterprises(result)
+                    res.status(200).json({ data: list })
                 }
                 else
                     res.status(200).json({ message: 'Não foram encontrados registros correspondentes a busca' })
@@ -80,7 +73,7 @@ class EnterprisesController {
             promise.then((result: IEnterpriseQuery[]) => {
 
                 if (result.length) {
-                    const enterprises = EnterprisesController.createListEnterprises(result)
+                    const enterprises = this.createListEnterprises(result)
                     res.status(200).json({ data: enterprises})
                 }
                 else
@@ -94,6 +87,19 @@ class EnterprisesController {
         } catch (error) {
             res.status(400).send(error)
         }
+    }
+
+    private createListEnterprises(result: IEnterpriseQuery[]): Enterprise[] {
+
+        let list: Enterprise[] = []
+
+        list = result.map((value: IEnterpriseQuery) => {
+
+            const enterprise = new Enterprise(value.name, value.id, new EnterpriseType(value.enterprise_type, value.enterprise_type_id))
+            return enterprise
+        })
+
+        return list
     }
 }
 
