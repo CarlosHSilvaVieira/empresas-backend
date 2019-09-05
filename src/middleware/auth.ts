@@ -15,7 +15,7 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
 
         if (token && client && access_token && uid) {
 
-            if (token.user.uid == uid || token.user.email == client) {
+            if (token.user.uid == uid && token.user.email == client) {
 
                 next()
             }
