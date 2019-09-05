@@ -2,7 +2,7 @@ import * as bodyParser from 'body-parser'
 import * as cors from 'cors'
 import * as express from 'express'
 
-import ServerVariables from './utils/serverVariables'
+import ServerConstants from './utils/serverConstants'
 import routes from './routes'
 
 class App {
@@ -28,7 +28,7 @@ class App {
 
         // initialize routes
 
-        this.app.use(`/api/${ServerVariables.version}/`, routes)
+        this.app.use(`/api/${ServerConstants.version}/`, routes)
     }
 }
 

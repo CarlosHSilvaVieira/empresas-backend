@@ -2,7 +2,7 @@ import * as jwt from 'jsonwebtoken'
 
 import { NextFunction, Request, Response } from 'express'
 
-import ServerVariables from '../utils/serverVariables'
+import ServerConstants from '../utils/serverConstants'
 
 export default function authMiddleware(req: Request, res: Response, next: NextFunction) {
 
@@ -11,7 +11,7 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
         const access_token: string = String(req.headers['access-token'])
         const client: string = String(req.headers['client'])
         const uid: string = String(req.headers['uid'])
-        const token: any = jwt.verify(access_token, ServerVariables.key)
+        const token: any = jwt.verify(access_token, ServerConstants.key)
 
         if (token && client && access_token && uid) {
 

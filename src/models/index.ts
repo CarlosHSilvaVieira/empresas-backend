@@ -1,16 +1,17 @@
+import ServerConstants from './../utils/serverConstants'
 import { createConnection } from 'mysql'
 
 const connection = createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'q1w2e3r4',
-    port: 3306,
-    database: 'empresas_backend'
+    host: ServerConstants.hostDB,
+    user: ServerConstants.userDB,
+    password: ServerConstants.passDB,
+    port: ServerConstants.portDB,
+    database: ServerConstants.schemaDB,
 })
 
 connection.connect((error) => {
 
-    if(error)
+    if (error)
         console.log('Erro ao conectar com banco de dados ', error)
 })
 

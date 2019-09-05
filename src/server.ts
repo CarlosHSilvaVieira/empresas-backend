@@ -1,7 +1,8 @@
+import ServerConstants from './utils/serverConstants'
 import app from './app'
 
-const PORT = 3000;
+const PORT = ServerConstants.port
 
 app.listen(PORT, () => {
-    console.log('Express server listening on port ' + PORT);
+    console.log('Express server listening on port ' + PORT)
 })

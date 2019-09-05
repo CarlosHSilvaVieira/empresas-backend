@@ -4,14 +4,14 @@ import { NextFunction, Request, Response } from 'express'
 
 import { IAuth } from 'interfaces/iauth'
 import { IUser } from 'interfaces/iuser'
-import ServerVariables from './../../utils/serverVariables'
+import ServerConstants from '../../utils/serverConstants'
 import User from '../../entities/user'
 import usersModel from '../../models/users'
 
 class UsersController {
 
     private static createToken(user: IUser): string {
-        const token = jwt.sign({ user }, ServerVariables.key, { algorithm: 'HS256', expiresIn: ServerVariables.expires })
+        const token = jwt.sign({ user }, ServerConstants.key, { algorithm: 'HS256', expiresIn: ServerConstants.expires })
         return token
     }
 
