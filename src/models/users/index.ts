@@ -18,6 +18,11 @@ class UsersModel {
         return this.executeQuery(query)
     }
 
+    public getUserByUid(uid: string): Promise<IUser> {
+        const query: string = `Select * from users where uid = '${this.addSlashes(uid)}'`
+        return this.executeQuery(query)
+    }
+
     private executeQuery(query: string): Promise<IUser> {
 
         const promise: Promise<IUser> = new Promise((resolve, reject) => {
